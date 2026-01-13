@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  flask-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.flask
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+    networks:
+      - app-network
+
+  express-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - FLASK_API_URL=http://flask-backend:5000
+    depends_on:
+      - flask-backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
