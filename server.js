@@ -23,11 +23,15 @@ app.get('/', (req, res) => {
 app.get('/api/status', async (req, res) => {
   try {
     const response = await axios.get('http://34.224.90.70/api/health');
+    console.log('Backend response:', response.data);
     res.json(response.data);
   } catch (error) {
+    console.error('Error fetching backend:', error.message);
+    console.error('Error details:', error.response?.data);
     res.status(500).json({ error: 'Failed to fetch backend data' });
   }
 });
+
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Frontend running on port ${PORT}`);
